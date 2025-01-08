@@ -1,0 +1,20 @@
+{
+    "name": "배승찬",
+    "github": "bea0266@github.com",
+    "email": "bea0266@naver.com",
+    "description": "안녕하세요. 개발자 배승찬입니다. 곧 4년차에 접어들며 SI사업 부서에서 일하였습니다.\n 주로 UI를 담당하였고 Vue.js를 하면서 프론트엔드 개발에 흥미를 느껴 현재까지 자바스크립트 공부를 매일 하고 있습니다. UI를 만드는 일은 사용자에게 서비스를 위한 소통창구를 만들어 주는 일이라고 생각합니다. 누군가에게 도움을 주는 매개체들을 만들어내는 것이 저의 가치라고 생각합니다.",
+    "profileImgSrc": "https://avatars.githubusercontent.com/u/77449822?v=4",
+    "skills": [
+        "html",
+        "css",
+        "javascript",
+        "typescript",
+        "java",
+        "vue",
+        "quasar",
+        "jquery",
+        "nodejs",
+        "mysql",
+        "springboot"
+    ]
+}

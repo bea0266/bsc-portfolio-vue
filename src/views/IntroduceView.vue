@@ -1,3 +1,17 @@
 <template>
-<h1>INTRODUCE</h1>
+<h1>소개</h1>
+<div class="details">
+  <p class="intro">{{ introduce.description }}</p>
+</div>
 </template>
+<script setup lang="ts">
+import introduce from '@/article/introduce.json';
+
+
+</script>
+<style scoped>
+.intro {
+  line-height: 50px;
+  width: 570px;
+}
+</style>

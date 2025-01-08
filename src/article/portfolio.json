@@ -1,0 +1,10 @@
+{
+    "projects": [
+        {
+            "title": "ZIRCON",
+            "date": "2024.04 ~ 현재",
+            "description": "VDI 원격 접속 솔루션",
+            "result": "Vue3 Pinia 문서화 가이드 제공(Typedoc), 장기 미사용 로그아웃 구현"
+        }
+    ]
+}

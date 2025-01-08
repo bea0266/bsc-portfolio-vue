@@ -3,17 +3,26 @@ import { RouterLink, RouterView } from 'vue-router'
 </script>
 
 <template>
-<h1>FE Developer Seungchan Bae</h1>
 <nav>
+  <RouterLink to="/home">Home</RouterLink> |
   <RouterLink to="/introduce">Introduce</RouterLink> |
-  <RouterLink to="/portfolio">Portfolio</RouterLink>
+  <RouterLink to="/skills">Skills</RouterLink> |
+  <RouterLink to="/projects">Projects</RouterLink>
 </nav>
-<RouterView />
+<div id="book_area">
+  <RouterView />
+  <span>이전 페이지</span> | 
+  <span>다음 페이지</span>
+</div>
+
 
 
 
 </template>
 
 <style scoped>
-
+#book_area {
+  height: 900px;
+  background-color: #c25959;
+}
 </style>
