@@ -1,11 +1,11 @@
 <template>
     <div class="main_cont">
-        <h1 class="main_cont_title">개발자 배승찬의 이야기</h1>
+        <h1 class="main_cont__title">개발자 배승찬의 이야기</h1>
         <p>안녕하세요 개발자 배승찬입니다. </p>
         <p>바로가기</p>
-        <button @click="linkToPage('introduce')">Introduce</button>
-        <button @click="linkToPage('skills')">Skills</button>
-        <button @click="linkToPage('projects')">Projects</button>
+        <button class="main_cont__btn" @click="linkToPage('introduce')">Introduce</button>
+        <button class="main_cont__btn" @click="linkToPage('skills')">Skills</button>
+        <button class="main_cont__btn" @click="linkToPage('projects')">Projects</button>
     </div>
 </template>
 <script setup lang="ts">
@@ -25,7 +25,7 @@ const linkToPage = (pageName: string) => {
     height: 800px;
 }
 
-button {
+.main_cont__btn {
   width: 125px;
   background-color: #000000;
   color: white;
