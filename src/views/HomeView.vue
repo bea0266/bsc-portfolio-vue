@@ -9,12 +9,8 @@
     </div>
 </template>
 <script setup lang="ts">
-import { useRouter } from 'vue-router'
-const router = useRouter()
+import { linkToPage } from '@/utils/routerUtils';
 
-const linkToPage = (pageName: string) => {
-  router.push({ name: pageName });
-}
 </script>
 <style>
 .main_cont {

@@ -1,11 +1,13 @@
 <template>
 	<header class="header">
 		<nav class="nav-menu">
-			<RouterLink to="/home">Home</RouterLink> |
-			<RouterLink to="/introduce">Introduce</RouterLink> |
-			<RouterLink to="/skills">Skills</RouterLink> |
-			<RouterLink to="/projects">Projects</RouterLink>
+			<div class="nav-menu__item" @click="linkToPage('home')">Home</div>
+			<div class="nav-menu__item" @click="linkToPage('introduce')">Introduce</div>
+			<div class="nav-menu__item" @click="linkToPage('skills')">Skills</div>
+			<div class="nav-menu__item" @click="linkToPage('projects')">Projects</div>
 		</nav>
+		<!-- TODO: 메뉴에 대한 진행 상황을 표시하고 싶어 -->
+		<div class="nav-menu__indicator"></div>
 	</header>
 	<main class="main-cont">
 		<section class="book-area">
@@ -17,7 +19,8 @@
 	</main>
 </template>
 <script setup lang="ts">
-	import { RouterLink, RouterView } from 'vue-router';
+import { RouterLink, RouterView } from 'vue-router';
+import { linkToPage } from '@/utils/routerUtils';
 </script>
 <style>
 	.book-area {
@@ -39,6 +42,11 @@
 		text-decoration: none;
 		font-weight: bold;
 		color: #333;
+	}
+
+	.nav-menu__indicator {
+		background-color: #333;
+		height: 5px;
 	}
   
   .btn__page {
