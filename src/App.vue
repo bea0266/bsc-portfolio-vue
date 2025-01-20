@@ -1,13 +1,21 @@
 <template>
 	<header class="header">
 		<nav class="nav-menu">
-			<div class="nav-menu__item" @click="linkToPage('home')">Home</div>
-			<div class="nav-menu__item" @click="linkToPage('introduce')">Introduce</div>
-			<div class="nav-menu__item" @click="linkToPage('skills')">Skills</div>
-			<div class="nav-menu__item" @click="linkToPage('projects')">Projects</div>
+			<div
+				v-for="item in menuItems"
+				:key="item.id"
+				@click="clickMenu(item.title)"
+			>
+				{{ item.title }}
+			</div>
 		</nav>
 		<!-- TODO: 메뉴에 대한 진행 상황을 표시하고 싶어 -->
-		<div class="nav-menu__indicator"></div>
+		<progress
+			class="header__progress"
+			:value="menuProgress.percent"
+			:min="menuProgress.min"
+			:max="menuProgress.max"
+		></progress>
 	</header>
 	<main class="main-cont">
 		<section class="book-area">
@@ -19,8 +27,60 @@
 	</main>
 </template>
 <script setup lang="ts">
-import { RouterLink, RouterView } from 'vue-router';
-import { linkToPage } from '@/utils/routerUtils';
+	import { RouterLink, RouterView } from 'vue-router';
+	import { linkToPage } from '@/utils/routerUtils';
+	import { ref } from 'vue';
+
+	// 메뉴 기본 항목
+	enum MenuItemsTitle {
+		HOME = 'Home',
+		INTRODUCE = 'Introduce',
+		SKILLS = 'Skills',
+		PROJECTS = 'Projects',
+	}
+	// 메뉴 항목 정의
+	const menuItems = ref([
+		{
+			id: 1,
+			title: MenuItemsTitle.HOME,
+		},
+		{
+			id: 2,
+			title: MenuItemsTitle.INTRODUCE,
+		},
+		{
+			id: 3,
+			title: MenuItemsTitle.SKILLS,
+		},
+		{
+			id: 4,
+			title: MenuItemsTitle.PROJECTS,
+		},
+	]);
+	const menuProgress = ref({
+		percent: 25,
+		min: 0,
+		max: 100,
+	});
+
+	const clickMenu = (menuTitle: string) => {
+		switch (menuTitle) {
+			case MenuItemsTitle.HOME:
+				menuProgress.value.percent = 25;
+				break;
+			case MenuItemsTitle.INTRODUCE:
+				menuProgress.value.percent = 50;
+				break;
+			case MenuItemsTitle.SKILLS:
+				menuProgress.value.percent = 75;
+				break;
+			case MenuItemsTitle.PROJECTS:
+				menuProgress.value.percent = 100;
+				break;
+		}
+
+		linkToPage(menuTitle.toLowerCase());
+	};
 </script>
 <style>
 	.book-area {
@@ -44,22 +104,32 @@ import { linkToPage } from '@/utils/routerUtils';
 		color: #333;
 	}
 
-	.nav-menu__indicator {
-		background-color: #333;
-		height: 5px;
+	.header__progress {
+		width: 100%;
+		height: 10px;
+		appearance: none;
 	}
-  
-  .btn__page {
-    border-radius: 25px;
-    border: none;
-    width: 85px;
-    padding: 10px;
-    margin-left: 10px;
-  }
-  #btn__page--prev::after {
-    content: '이전';
-  }
-  #btn__page--next::after {
-    content: '다음';
-  }
+
+	.header__progress::-webkit-progress-bar {
+		background: #e0dfdc83;
+		box-shadow: inset 3px 3px 10px #ccc;
+	}
+
+	.header__progress::-webkit-progress-value {
+		background: #707070;
+	}
+
+	.btn__page {
+		border-radius: 25px;
+		border: none;
+		width: 85px;
+		padding: 10px;
+		margin-left: 10px;
+	}
+	#btn__page--prev::after {
+		content: '이전';
+	}
+	#btn__page--next::after {
+		content: '다음';
+	}
 </style>
