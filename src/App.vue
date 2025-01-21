@@ -20,9 +20,12 @@
 	<main class="main-cont">
 		<section class="book-area">
 			<RouterView />
-			<!-- TODO: 이 페이지 버튼을 어떻게 꾸며볼까? -->
-			<button id="btn__page--prev" class="btn__page"></button>
-			<button id="btn__page--next" class="btn__page"></button>
+			<!-- TODO: 
+			    1. 이 페이지 버튼을 어떻게 꾸며볼까?
+				2. 메뉴와 이전/다음버튼 클릭 시 프로그레스바 동작을 일관성 있게 구현하려면 어떻게 해야 하나? 
+		    -->
+			<button id="btn__page--prev" @click="clickPageBtn(ButtonsTitle.PREV)" class="btn__page"></button>
+			<button id="btn__page--next" @click="clickPageBtn(ButtonsTitle.NEXT)" class="btn__page"></button>
 		</section>
 	</main>
 </template>
@@ -38,6 +41,17 @@
 		SKILLS = 'Skills',
 		PROJECTS = 'Projects',
 	}
+	// 화면 공통 사용되는 버튼에 대한 타이틀 정보
+	enum ButtonsTitle {
+		NEXT = 'Next',
+		PREV = 'Prev', 
+	}
+    // 프로그레스바 최소값, 최대값 정의
+	enum ProgressBarOption {
+		MIN = 0,
+		MAX = 100,
+	}
+
 	// 메뉴 항목 정의
 	const menuItems = ref([
 		{
@@ -59,27 +73,44 @@
 	]);
 	const menuProgress = ref({
 		percent: 25,
-		min: 0,
-		max: 100,
+		min: ProgressBarOption.MIN,
+		max: ProgressBarOption.MAX,
 	});
 
-	const clickMenu = (menuTitle: string) => {
+	const clickMenu = (menuTitle: MenuItemsTitle) => {
 		switch (menuTitle) {
 			case MenuItemsTitle.HOME:
-				menuProgress.value.percent = 25;
+				changeProgressBarPercent(25);
 				break;
 			case MenuItemsTitle.INTRODUCE:
-				menuProgress.value.percent = 50;
+				changeProgressBarPercent(50);
 				break;
 			case MenuItemsTitle.SKILLS:
-				menuProgress.value.percent = 75;
+				changeProgressBarPercent(75);
 				break;
 			case MenuItemsTitle.PROJECTS:
-				menuProgress.value.percent = 100;
+				changeProgressBarPercent(100);
 				break;
 		}
 
 		linkToPage(menuTitle.toLowerCase());
+	};
+
+	const changeProgressBarPercent = (val: number) => {
+		menuProgress.value.percent = val;
+	}
+
+	const clickPageBtn = (title: ButtonsTitle) => {
+		const currentProgressPercent = menuProgress.value.percent;
+		switch (title) {
+			case ButtonsTitle.PREV:
+				if (currentProgressPercent === ProgressBarOption.MIN) return;
+				changeProgressBarPercent(currentProgressPercent - 25);
+				break;
+			case ButtonsTitle.NEXT:
+				if (currentProgressPercent === ProgressBarOption.MAX) return;
+				changeProgressBarPercent(currentProgressPercent + 25);
+		}
 	};
 </script>
 <style>
@@ -125,6 +156,8 @@
 		width: 85px;
 		padding: 10px;
 		margin-left: 10px;
+		background-color: #4e4d4d;
+		color: white;
 	}
 	#btn__page--prev::after {
 		content: '이전';
