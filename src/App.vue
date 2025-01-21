@@ -32,7 +32,9 @@
 <script setup lang="ts">
 	import { RouterLink, RouterView } from 'vue-router';
 	import { linkToPage } from '@/utils/routerUtils';
-	import { ref } from 'vue';
+	import { computed, ref } from 'vue';
+	import { useAppStore } from '@/stores/app';
+import { storeToRefs } from 'pinia';
 
 	// 메뉴 기본 항목
 	enum MenuItemsTitle {
@@ -51,26 +53,18 @@
 		MIN = 0,
 		MAX = 100,
 	}
+    
+	const appStore = useAppStore();
 
-	// 메뉴 항목 정의
-	const menuItems = ref([
-		{
-			id: 1,
-			title: MenuItemsTitle.HOME,
-		},
-		{
-			id: 2,
-			title: MenuItemsTitle.INTRODUCE,
-		},
-		{
-			id: 3,
-			title: MenuItemsTitle.SKILLS,
-		},
-		{
-			id: 4,
-			title: MenuItemsTitle.PROJECTS,
-		},
-	]);
+	const { currentMenu, menus } = storeToRefs(appStore);
+
+	const menuItems = computed(() => menus.value.map((item) => {
+		return {
+			id: item.id,
+			title: item.title,
+		}
+	}));
+
 	const menuProgress = ref({
 		percent: 25,
 		min: ProgressBarOption.MIN,
@@ -93,11 +87,19 @@
 				break;
 		}
 
+		appStore.changeCurrentMenu(menuTitle);
 		linkToPage(menuTitle.toLowerCase());
+		
 	};
 
 	const changeProgressBarPercent = (val: number) => {
-		menuProgress.value.percent = val;
+	    if (val < ProgressBarOption.MIN) {
+			menuProgress.value.percent = ProgressBarOption.MIN;
+		} else if (val > ProgressBarOption.MAX) {
+			menuProgress.value.percent = ProgressBarOption.MAX;
+		} else {
+			menuProgress.value.percent = val;
+		}
 	}
 
 	const clickPageBtn = (title: ButtonsTitle) => {
