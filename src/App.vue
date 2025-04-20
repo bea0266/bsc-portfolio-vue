@@ -19,12 +19,11 @@
 	</header>
 	<main class="main-cont">
 		<section class="book-area">
-			
-				<RouterView v-slot="{ Component}">
-					<transition name="fade" mode="out-in">
-						<Component :is="Component" :key="$route.fullPath"/>
-					</transition>
-				</RouterView>
+			<RouterView v-slot="{ Component }">
+				<transition name="fade" mode="out-in">
+					<Component :is="Component" :key="$route.fullPath" />
+				</transition>
+			</RouterView>
 			<!-- TODO: 
 			    1. 이 페이지 버튼을 어떻게 꾸며볼까?
 				2.상태 관리를 사용해서 이전/다음버튼 클릭 시 동작을 구현해보자.
@@ -45,31 +44,22 @@
 <script setup lang="ts">
 	import { RouterLink, RouterView } from 'vue-router';
 	import { linkToPage } from '@/utils/routerUtils';
-	import { computed, ref } from 'vue';
-	import { useAppStore } from '@/stores/app';
+	import { computed, onMounted, ref } from 'vue';
 	import { storeToRefs } from 'pinia';
+	import { useAppStore } from '@/stores/app';
+	import {
+		ButtonsTitle,
+		menuProgress,
+		ProgressBarOption,
+		getProgressBarPercent,
+		clickMenu,
+MenuItemsTitle,
+	} from '@/utils/progressUtils';
+	import { useRoute } from 'vue-router';
 
-	// 메뉴 기본 항목
-	enum MenuItemsTitle {
-		HOME = 'Home',
-		INTRODUCE = 'Introduce',
-		SKILLS = 'Skills',
-		PROJECTS = 'Projects',
-	}
-	// 화면 공통 사용되는 버튼에 대한 타이틀 정보
-	enum ButtonsTitle {
-		NEXT = 'Next',
-		PREV = 'Prev',
-	}
-	// 프로그레스바 최소값, 최대값 정의
-	enum ProgressBarOption {
-		MIN = 0,
-		MAX = 100,
-	}
-
+	const route = useRoute();
 	const appStore = useAppStore();
-
-	const { currentMenu, menus } = storeToRefs(appStore);
+	const { currentMenu, menus } = storeToRefs(useAppStore());
 
 	const menuItems = computed(() =>
 		menus.value.map(item => {
@@ -80,54 +70,25 @@
 		})
 	);
 
-	const menuProgress = ref({
-		percent: 25,
-		min: ProgressBarOption.MIN,
-		max: ProgressBarOption.MAX,
-	});
-
-	const clickMenu = (menuTitle: MenuItemsTitle) => {
-		switch (menuTitle) {
-			case MenuItemsTitle.HOME:
-				changeProgressBarPercent(25);
-				break;
-			case MenuItemsTitle.INTRODUCE:
-				changeProgressBarPercent(50);
-				break;
-			case MenuItemsTitle.SKILLS:
-				changeProgressBarPercent(75);
-				break;
-			case MenuItemsTitle.PROJECTS:
-				changeProgressBarPercent(100);
-				break;
-		}
-
-		appStore.changeCurrentMenu(menuTitle);
-		linkToPage(menuTitle.toLowerCase());
-	};
-
-	const changeProgressBarPercent = (val: number) => {
-		if (val < ProgressBarOption.MIN) {
-			menuProgress.value.percent = ProgressBarOption.MIN;
-		} else if (val > ProgressBarOption.MAX) {
-			menuProgress.value.percent = ProgressBarOption.MAX;
-		} else {
-			menuProgress.value.percent = val;
-		}
-	};
-
 	const clickPageBtn = (title: ButtonsTitle) => {
 		const currentProgressPercent = menuProgress.value.percent;
 		switch (title) {
 			case ButtonsTitle.PREV:
 				if (currentProgressPercent === ProgressBarOption.MIN) return;
-				changeProgressBarPercent(currentProgressPercent - 25);
+				getProgressBarPercent(currentProgressPercent - 25);
 				break;
 			case ButtonsTitle.NEXT:
 				if (currentProgressPercent === ProgressBarOption.MAX) return;
-				changeProgressBarPercent(currentProgressPercent + 25);
+				getProgressBarPercent(currentProgressPercent + 25);
 		}
 	};
+
+	onMounted(() => {
+		const currentMenuTitle = currentMenu.value;
+		console.log('currentMenuTitle', currentMenuTitle);
+		clickMenu(currentMenuTitle);
+
+	});
 </script>
 <style>
 	nav {
