@@ -41,16 +41,6 @@ export const useAppStore = defineStore(
 		return { currentMenu, menus, changeCurrentMenu };
 	},
 	{
-		// persist 옵션 추가
-		persist: {
-			enabled: true, // 상태를 영구적으로 저장
-			strategies: [
-				{
-					key: 'app-store', // localStorage에 저장될 키 이름
-					storage: localStorage, // 저장 위치 (localStorage 또는 sessionStorage)
-					paths: ['currentMenu'], // 특정 상태만 저장 (예: currentMenu)
-				},
-			],
-		},
+		persist: true,
 	}
 );
