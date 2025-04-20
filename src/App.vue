@@ -19,13 +19,26 @@
 	</header>
 	<main class="main-cont">
 		<section class="book-area">
-			<RouterView />
+			
+				<RouterView v-slot="{ Component}">
+					<transition name="fade" mode="out-in">
+						<Component :is="Component" :key="$route.fullPath"/>
+					</transition>
+				</RouterView>
 			<!-- TODO: 
 			    1. 이 페이지 버튼을 어떻게 꾸며볼까?
-				2. 메뉴와 이전/다음버튼 클릭 시 프로그레스바 동작을 일관성 있게 구현하려면 어떻게 해야 하나? 
+				2.상태 관리를 사용해서 이전/다음버튼 클릭 시 동작을 구현해보자.
 		    -->
-			<button id="btn__page--prev" @click="clickPageBtn(ButtonsTitle.PREV)" class="btn__page"></button>
-			<button id="btn__page--next" @click="clickPageBtn(ButtonsTitle.NEXT)" class="btn__page"></button>
+			<button
+				id="btn__page--prev"
+				@click="clickPageBtn(ButtonsTitle.PREV)"
+				class="btn__page"
+			></button>
+			<button
+				id="btn__page--next"
+				@click="clickPageBtn(ButtonsTitle.NEXT)"
+				class="btn__page"
+			></button>
 		</section>
 	</main>
 </template>
@@ -34,7 +47,7 @@
 	import { linkToPage } from '@/utils/routerUtils';
 	import { computed, ref } from 'vue';
 	import { useAppStore } from '@/stores/app';
-import { storeToRefs } from 'pinia';
+	import { storeToRefs } from 'pinia';
 
 	// 메뉴 기본 항목
 	enum MenuItemsTitle {
@@ -46,24 +59,26 @@ import { storeToRefs } from 'pinia';
 	// 화면 공통 사용되는 버튼에 대한 타이틀 정보
 	enum ButtonsTitle {
 		NEXT = 'Next',
-		PREV = 'Prev', 
+		PREV = 'Prev',
 	}
-    // 프로그레스바 최소값, 최대값 정의
+	// 프로그레스바 최소값, 최대값 정의
 	enum ProgressBarOption {
 		MIN = 0,
 		MAX = 100,
 	}
-    
+
 	const appStore = useAppStore();
 
 	const { currentMenu, menus } = storeToRefs(appStore);
 
-	const menuItems = computed(() => menus.value.map((item) => {
-		return {
-			id: item.id,
-			title: item.title,
-		}
-	}));
+	const menuItems = computed(() =>
+		menus.value.map(item => {
+			return {
+				id: item.id,
+				title: item.title,
+			};
+		})
+	);
 
 	const menuProgress = ref({
 		percent: 25,
@@ -89,18 +104,17 @@ import { storeToRefs } from 'pinia';
 
 		appStore.changeCurrentMenu(menuTitle);
 		linkToPage(menuTitle.toLowerCase());
-		
 	};
 
 	const changeProgressBarPercent = (val: number) => {
-	    if (val < ProgressBarOption.MIN) {
+		if (val < ProgressBarOption.MIN) {
 			menuProgress.value.percent = ProgressBarOption.MIN;
 		} else if (val > ProgressBarOption.MAX) {
 			menuProgress.value.percent = ProgressBarOption.MAX;
 		} else {
 			menuProgress.value.percent = val;
 		}
-	}
+	};
 
 	const clickPageBtn = (title: ButtonsTitle) => {
 		const currentProgressPercent = menuProgress.value.percent;
@@ -116,11 +130,6 @@ import { storeToRefs } from 'pinia';
 	};
 </script>
 <style>
-	.book-area {
-		height: 900px;
-		border: 1px solid #333;
-	}
-
 	nav {
 		display: flex;
 		/* background-color: #f1f1f1; */
@@ -153,6 +162,19 @@ import { storeToRefs } from 'pinia';
 	}
 
 	.btn__page {
+		position: absolute;
+		bottom: 20px;
+		left: 50%;
+		transform: translateX(-50%);
+		border-radius: 25px;
+		border: none;
+		width: 85px;
+		padding: 10px;
+		background-color: #4e4d4d;
+		color: white;
+	}
+
+	/* .btn__page {
 		border-radius: 25px;
 		border: none;
 		width: 85px;
@@ -160,7 +182,19 @@ import { storeToRefs } from 'pinia';
 		margin-left: 10px;
 		background-color: #4e4d4d;
 		color: white;
+	}*/
+	/* 이전 버튼: 왼쪽에 배치 */
+	#btn__page--prev {
+		left: 10%; /* 부모 요소의 왼쪽에서 10% */
+		transform: translateX(0); /* 중앙 정렬 해제 */
 	}
+
+	/* 다음 버튼: 오른쪽에 배치 */
+	#btn__page--next {
+		right: 10%; /* 부모 요소의 오른쪽에서 10% */
+		transform: translateX(0); /* 중앙 정렬 해제 */
+	}
+
 	#btn__page--prev::after {
 		content: '이전';
 	}
