@@ -93,33 +93,68 @@ MenuItemsTitle,
 <style>
 	nav {
 		display: flex;
-		/* background-color: #f1f1f1; */
 		margin: 5px;
 		padding: 15px;
 		justify-content: space-around;
 		align-items: center;
 		text-align: center;
+		height: 60px;
+		font-family: 'Noto Sans KR', sans-serif;
 	}
 
 	nav a {
 		text-decoration: none;
-		font-weight: bold;
+		font-weight: 500;
 		color: #333;
+		font-family: 'Noto Sans KR', sans-serif;
+	}
+
+	.nav-menu {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		height: 100%;
+		gap: 2rem;
+	}
+
+	.nav-menu > div {
+		cursor: pointer;
+		padding: 0.5rem 1rem;
+		transition: all 0.3s ease;
+		font-weight: 500;
+	}
+
+	.nav-menu > div:hover {
+		color: #2196F3;
+		transform: translateY(-2px);
 	}
 
 	.header__progress {
 		width: 100%;
-		height: 10px;
+		height: 6px;
 		appearance: none;
+		border-radius: 3px;
+		overflow: hidden;
+		transition: all 0.3s ease;
 	}
 
 	.header__progress::-webkit-progress-bar {
-		background: #e0dfdc83;
-		box-shadow: inset 3px 3px 10px #ccc;
+		background: rgba(255, 255, 255, 0.1);
+		backdrop-filter: blur(10px);
+		border-radius: 3px;
 	}
 
 	.header__progress::-webkit-progress-value {
-		background: #707070;
+		background: linear-gradient(90deg, #6366f1, #8b5cf6, #ec4899);
+		border-radius: 3px;
+		transition: width 0.3s ease;
+		box-shadow: 0 0 10px rgba(139, 92, 246, 0.3);
+	}
+
+	.header__progress::-moz-progress-bar {
+		background: linear-gradient(90deg, #6366f1, #8b5cf6, #ec4899);
+		border-radius: 3px;
+		box-shadow: 0 0 10px rgba(139, 92, 246, 0.3);
 	}
 
 	.btn__page {
@@ -161,5 +196,17 @@ MenuItemsTitle,
 	}
 	#btn__page--next::after {
 		content: '다음';
+	}
+
+	.book-area {
+		position: relative;
+		height: calc(100vh - 100px);
+		border: 1px solid #333;
+		overflow: hidden;
+	}
+
+	.book-area > *:not(.main_cont) {
+		padding: 2rem;
+		box-sizing: border-box;
 	}
 </style>

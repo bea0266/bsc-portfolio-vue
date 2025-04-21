@@ -1,9 +1,17 @@
 @import './base.css';
 
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
 #app {
   width: 100%;
-  max-width: 1200px;
-  margin: auto;
+  height: 100vh;
+  margin: 0;
+  padding: 0;
 }
 
 a,
@@ -33,10 +41,10 @@ a,
   }
 }
 .book-area {
-  position: relative; /* 부모 컨테이너를 기준으로 절대 위치 설정 */
-  height: 900px;
+  position: relative;
+  height: calc(100vh - 100px); /* 헤더 높이를 고려하여 계산 */
   border: 1px solid #333;
-  overflow: hidden; /* 내부 콘텐츠가 넘칠 경우 숨김 처리 */
+  overflow: hidden;
 }
 
 .fade-enter-active,

@@ -1,9 +1,10 @@
 <template>
 	<div>
+	    <h1>소개</h1>
 		<div class="details">
 			<p class="intro">{{ introduce.description }}</p>
 		</div>
-    <h1>소개</h1>
+
 	</div>
 </template>
 <script setup lang="ts">
